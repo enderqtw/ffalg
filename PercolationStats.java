@@ -1,12 +1,13 @@
-package algsTaks1;
+
+
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 
-    /**
-    *   Created by enderqtw on 10.01.2017.
-    */
+/**
+ * Created by enderqtw on 10.01.2017.
+ */
 public class PercolationStats {
     private Percolation[] perc;
     private int[] stats;
@@ -14,7 +15,7 @@ public class PercolationStats {
 
     public PercolationStats(int n, int trials) {
         if ((n < 1) || (trials < 1)) {
-            throw new IndexOutOfBoundsException("row index i out of bounds");
+            throw new java.lang.IllegalArgumentException("The numbers n and trials must be greater than 0!");
         }
         this.trials = trials;
         perc = new Percolation[trials + 1];
@@ -41,19 +42,30 @@ public class PercolationStats {
     }
 
     public static void main(String[] args) {
-        PercolationStats pcStats = new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
 
-        for (int i = 1; i <= Integer.parseInt(args[1]); i++) {
-            while (!pcStats.perc[i].percolates()) {
-                pcStats.perc[i].open(StdRandom.uniform(Integer.parseInt(args[0])) + 1, StdRandom.uniform(Integer.parseInt(args[0])) + 1);
+        while (!StdIn.isEmpty()) {
+            int t;
+            int n = StdIn.readInt();
+            if (StdIn.hasNextChar()) {
+                t = StdIn.readInt();
+            } else {
+                t = 1;
             }
-            pcStats.stats[i] = pcStats.perc[i].numberOfOpenSites();
-            System.out.println(pcStats.stats[i]);
+            PercolationStats pcStats = new PercolationStats(n, t);
+            for (int i = 1; i <= t; i++) {
+//                while ((pcStats.perc[i].percolates() == false) || (pcStats.perc[i].numberOfOpenSites() < n * n)) {
+                while (!pcStats.perc[i].percolates()) {
+                    pcStats.perc[i].open(StdRandom.uniform(n) + 1, StdRandom.uniform(n) + 1);
+                }
+                pcStats.stats[i] = pcStats.perc[i].numberOfOpenSites();
+                System.out.println(pcStats.stats[i]);
+                System.out.println("mean = " + pcStats.mean());
+                System.out.println("stddev = " + pcStats.stddev());
+                System.out.println("95% confidence interval = " + pcStats.confidenceLo() +
+                        ", " + pcStats.confidenceHi());
+            }
         }
-
-        System.out.println("mean = " + pcStats.mean());
-        System.out.println("stddev = " + pcStats.stddev());
-        System.out.println("95% confidence interval = " + pcStats.confidenceLo() + ", " + pcStats.confidenceHi());
     }
-
 }
+
+

@@ -1,4 +1,5 @@
-package algsTaks1;
+
+
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 /**
@@ -9,9 +10,10 @@ public class Percolation {
     private int[][] grid;
     private int n;
 
+
     public Percolation(int n) {
         if (n <= 0) {
-            throw new IndexOutOfBoundsException("row index i out of bounds");
+            throw new java.lang.IllegalArgumentException("The number n must be greater than 0!");
         }
 
         this.n = n;
@@ -30,34 +32,30 @@ public class Percolation {
             throw new IndexOutOfBoundsException("row index i out of bounds");
         }
 
-//        if (grid[row][col] == 1) {
-//            return;
-//        }
+        if (grid[row][col] == 1) {
+            return;
+        }
         grid[row][col] = 1;
         if (col - 1 > 0) {
             if (isOpen(row, col - 1) && (!quickUnion.connected(viewParse(row, col) - 1, viewParse(row, col)))) {
                 quickUnion.union(viewParse(row, col) - 1, viewParse(row, col));
             }
-        }
-        // check of the left element
+        }   // check of the left element
         if (col < n) {
             if (isOpen(row, col + 1) && (!quickUnion.connected(viewParse(row, col) + 1, viewParse(row, col)))) {
                 quickUnion.union(viewParse(row, col) + 1, viewParse(row, col));
             }
-        }
-        // check of the right element
+        }   // check of the right element
         if (row - 1 > 0) {
             if (isOpen(row - 1, col) && (!quickUnion.connected(viewParse(row, col) - n, viewParse(row, col)))) {
                 quickUnion.union(viewParse(row, col) - n, viewParse(row, col));
             }
-        }
-        // check of the top element
+        }   // check of the top element
         if (row < n) {
             if (isOpen(row + 1, col) && (!quickUnion.connected(viewParse(row, col) + n, viewParse(row, col)))) {
                 quickUnion.union(viewParse(row, col) + n, viewParse(row, col));
             }
-        }
-        // check of the bottom element
+        }       // check of the bottom element
     }   // opens (row, col) site
 
 
@@ -82,12 +80,12 @@ public class Percolation {
         }
 
         if (isOpen(row, col)) {
-            if (quickUnion.connected((row - 1) * n + col, 0)) {
+            if (quickUnion.connected(viewParse(row, col), 1)) {
                 return true;
             }
         }
         return false;
-    }   // returns boolean value weather site if full
+    }   // returns boolean value weather site is full
 
     public int numberOfOpenSites() {
         int count = 0;
