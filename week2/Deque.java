@@ -1,4 +1,3 @@
-package week2;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -8,21 +7,30 @@ import java.util.NoSuchElementException;
  */
 public class Deque<Item> implements Iterable<Item> {
     private Item[] queue;
+    private int n;
+    private int first = 0, last = 0;
 
     public Deque() {
         queue = (Item[]) new Object[0];
     }   // constructor of Deque
 
     public boolean isEmpty() {
-        if (queue.length != 0) {
-            return false;
-        }
-        return true;
-    }   //  is the deque empty?
+        return queue.length == 0;
+    }   //  is the queue empty?
 
     public int size() {
         return queue.length;
     }   //  return the number of items on the deque
+
+    private void resize(int a) {
+        Item[] el = (Item[]) new Object[a];
+        for (int i = 0; i < queue.length; i++) {
+            el[i] = queue[(first + i) % queue.length];
+        }
+        queue = el;
+        first = 0;
+        last = n;
+    }   //  queue resize
 
     public void addFirst(Item item) {
         if (item == null) {
@@ -33,7 +41,8 @@ public class Deque<Item> implements Iterable<Item> {
             deque[i] = queue[i];
         }
         queue = deque;
-        queue[queue.length - 1] = item;
+        last = queue.length - 1;
+        queue[last] = item;
 
     }   //  add the item to the front
 
@@ -75,35 +84,33 @@ public class Deque<Item> implements Iterable<Item> {
         return removeNumber;
     }   //  remove and return the item from the end
 
+    public Iterator<Item> iterator() {
+        return new ArrayIterator();
+    }   //  return an iterator over items in order from front to end
+
+
     private class ArrayIterator implements Iterator<Item> {
-        private int k = queue.length - 1;
+        private int element = 0;
 
         @Override
         public boolean hasNext() {
-            if (k >= 0) {
-                return true;
-            }
-            return false;
+            return element < n;
+        }
+
+        @Override
+        public void remove() {
+            throw new NoSuchElementException();
         }
 
         @Override
         public Item next() {
             if (!hasNext()) {
-                throw new NoSuchElementException("Doesn't have a next element");
+                throw new NoSuchElementException();
             }
-            Item nextElement = queue[k--];
-            return nextElement;
+            Item item = queue[(element + first) % queue.length];
+            return item;
         }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException("Cannot remove");
-        }
-    }
-
-    public Iterator<Item> iterator() {
-        return new ArrayIterator();
-    }   //  return an iterator over items in order from front to end
+    }   //  iterator method inicialize
 
     public static void main(String[] args) {
     }   //  optional
