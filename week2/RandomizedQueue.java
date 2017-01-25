@@ -12,7 +12,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private int n;
     private Item[] queue;
 
-
     public RandomizedQueue() {
         queue = (Item[]) new Object[2];
     }   //  randomizedQueue constructor
@@ -78,7 +77,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }   //  Iterator constructor
 
     private class ArrayIterator implements Iterator<Item> {
-        //  private int element = 0;
         private int e = 0;
         private Item[] random;
 
@@ -93,15 +91,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         @Override
         public boolean hasNext() {
             return e < n;
-        }
+        }   //  does the queue has next element?
 
         @Override
         public void remove() {
             if (!hasNext()) {
-                throw new java.util.NoSuchElementException;
+                throw new java.util.NoSuchElementException();
             }
             throw new UnsupportedOperationException();
-        }
+        }   //  remove element method
 
         @Override
         public Item next() {
@@ -110,7 +108,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             }
             random = (Item[]) new Object[e];
             return random[e++];
-        }
+        }   //  return next queue's element
     }   //  iterator method inicialize
 
     public static void main(String[] args) {
