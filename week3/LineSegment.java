@@ -1,4 +1,4 @@
-2package week3;
+package week3;
 
 /**
  * Created by woice on 17.25.1.
