@@ -33,7 +33,7 @@ public class Point implements Comparable<Point> {
         StdDraw.line(this.x, this.y, that.x, that.y);
     }
 
-    //  compares two points by y- coordinate, breaking ties by x-coordinates
+    //  compares two points by y-coordinate, breaking ties by x-coordinates
     public int compareTo(Point that) {
         if (that.y != this.y) {
             return this.y - that.y;
@@ -42,7 +42,12 @@ public class Point implements Comparable<Point> {
     }
 
     // compare points by slope
-    private Comparator<Point> slopeOrder = new Slope();
+    public Comparator<Point> slopeOrder() {
+        Comparator<Point> setSlopeOrder = new Slope();
+        return setSlopeOrder;
+    }
+
+
 
     private class Slope implements Comparator<Point> {
         //  compares two points by the slope they make with current point

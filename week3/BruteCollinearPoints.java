@@ -11,7 +11,7 @@ public class BruteCollinearPoints {
     private int lCount;     //  number of lines
     private LineSegment[] lines;    //  array of linear segments
 
-    //  constructor
+    //  finds all line segments containing 4 points
     public BruteCollinearPoints(Point[] points) {
         if (points == null) {
             throw new java.lang.NullPointerException("Empty array");
@@ -19,32 +19,32 @@ public class BruteCollinearPoints {
         lCount = 0;
         lines = new LineSegment[1];
         int n = points.length;
-        Point[] copy = new Point[points.length];
+        Point[] pointsCopy = new Point[points.length];
         for (int i = 0; i < n; i++) {
             if (points[i] == null) {
                 throw new java.lang.NullPointerException("Null point");
             }
-            copy[i] = points[i];
+            pointsCopy[i] = points[i];
         }
-        Arrays.sort(copy);
-        double firstSlope, secondSLope, thirdSlope;
+        Arrays.sort(pointsCopy);
+        double firstSlope, secondSlope, thirdSlope;
 
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
-                firstSlope = copy[i].slopeTo(copy[j]);
+                firstSlope = pointsCopy[i].slopeTo(pointsCopy[j]);
                 if (firstSlope == Double.NEGATIVE_INFINITY) {
-                    throw new java.lang.IllegalArgumentException("Repeated point.");
+                    throw new java.lang.IllegalArgumentException("Repeated point");
                 }
                 for (int k = j + 1; k < n; k++) {
-                    secondSLope = copy[j].slopeTo(copy[k]);
-                    if (firstSlope == secondSLope) {
+                    secondSlope = pointsCopy[j].slopeTo(pointsCopy[k]);
+                    if (firstSlope == secondSlope) {
                         for (int l = k + 1; l < n; l++) {
-                            thirdSlope = copy[k].slopeTo(copy[l]);
-                            if (firstSlope == thirdSlope && secondSLope == thirdSlope) {
+                            thirdSlope = pointsCopy[k].slopeTo(pointsCopy[l]);
+                            if (firstSlope == secondSlope && firstSlope == thirdSlope && secondSlope == thirdSlope) {
                                 if (lCount == lines.length) {
                                     resize(2 * lines.length);
                                 }
-                                lines[lCount] = new LineSegment(copy[i], copy[l]);
+                                lines[lCount] = new LineSegment(pointsCopy[i], pointsCopy[l]);
                                 lCount++;
                             }
                         }
@@ -66,7 +66,7 @@ public class BruteCollinearPoints {
 
     //  the number of line segments
     public int numberOfSegments() {
-        return lCount;
+        return lCount;  //  <?>lines.length
     }
 
     //  the line segments
